@@ -19,6 +19,8 @@ class EntityManagerCreator
             'password' => '',
             'host' => 'localhost',
             'driver' => 'pdo_mysql',
+            'charset'  => 'utf8',
+
         );
 
         $config = Setup::createAnnotationMetadataConfiguration(
