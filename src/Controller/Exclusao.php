@@ -30,6 +30,8 @@ class Exclusao implements InterfaceControladorRequisicao
         );
 
         if (is_null($id) || $id === false) {
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] = 'Curso inexistente';
             header('Location: /listar-cursos');
             return;
         }
@@ -37,6 +39,8 @@ class Exclusao implements InterfaceControladorRequisicao
         $curso = $this->entityManager->getReference(Curso::class, $id);
         $this->entityManager->remove($curso);
         $this->entityManager->flush();
+        $_SESSION['tipo_mensagem'] = 'success';
+        $_SESSION['mensagem'] = 'Curso excuído com sucesso';
         header('Location: /listar-cursos');
     }
 }

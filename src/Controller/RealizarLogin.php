@@ -10,6 +10,11 @@ use Alura\Cursos\Infra\EntityManagerCreator;
 class RealizarLogin implements InterfaceControladorRequisicao
 {
 
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private $repositorioDeUsuarios;
+
     public function __construct()
     {
         $entitymanager = (new EntityManagerCreator())->getEntityManager();
@@ -24,7 +29,9 @@ class RealizarLogin implements InterfaceControladorRequisicao
             FILTER_VALIDATE_EMAIL
         );
         if (is_null($email) || $email === false) {
-            echo "E-mail digitado não é válido";
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] =  "O e-mail digitado não é um e-mail válido.";
+            header('Location: /login');
             return;
         }
 
@@ -36,12 +43,16 @@ class RealizarLogin implements InterfaceControladorRequisicao
         /** @var Usuario $usuario */
         $usuario = $this->repositorioDeUsuarios
             ->findOneBy(['email' => $email]);
-        password_verify($usuario);
 
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)){
-            echo "Login ou Senha inválidos!";
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] =  "E-mail ou senha inválidos";
+            header('Location: /login');
             return;
         }
+
+        $_SESSION['logado'] = true;
+
         header('Location: /listar-cursos');
     }
 }
