@@ -2,7 +2,6 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-
 use Alura\Cursos\Controller\InterfaceControladorRequisicao;
 
 $caminho = $_SERVER['PATH_INFO'];
